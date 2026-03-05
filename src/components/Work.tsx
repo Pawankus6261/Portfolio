@@ -4,7 +4,6 @@ import vaitra from "../assets/vaitra.png";
 import avtaar from "../assets/Avtaar3D.png";
 import journal from "../assets/journal.png";
 import portfolio from "../assets/portfolio.png";
-import face from "../assets/face.png";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
