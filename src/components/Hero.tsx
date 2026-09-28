@@ -184,7 +184,12 @@ const Hero = ({ isReady = true }: HeroProps) => {
               ref={primaryBtnRef}
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+                const el = document.getElementById("work");
+                if (window.lenis && el) {
+                  window.lenis.scrollTo(el, { offset: -50, duration: 1.25 });
+                } else {
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }
               }}
             >
               See selected work
@@ -208,7 +213,12 @@ const Hero = ({ isReady = true }: HeroProps) => {
               ref={secondaryBtnRef}
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                const el = document.getElementById("contact");
+                if (window.lenis && el) {
+                  window.lenis.scrollTo(el, { offset: -50, duration: 1.25 });
+                } else {
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }
               }}
             >
               Get in touch

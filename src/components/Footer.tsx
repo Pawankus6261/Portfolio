@@ -1,6 +1,10 @@
+import { useSmoothScroll } from "@/context/SmoothScrollContext";
+
 const Footer = () => {
+  const { scrollTo } = useSmoothScroll();
+
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollTo(0, { duration: 1.5 });
   };
 
   return (

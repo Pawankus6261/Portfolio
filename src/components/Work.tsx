@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 interface CaseStudyChapter {
   title: string;
@@ -251,131 +253,158 @@ const Work = () => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll and Lenis when modal is open
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = "hidden";
+      window.lenis?.stop();
     } else {
       document.body.style.overflow = "";
+      window.lenis?.start();
     }
+    return () => {
+      document.body.style.overflow = "";
+      window.lenis?.start();
+    };
   }, [selectedProject]);
 
   return (
     <section className="work-section" id="work">
       <div className="container">
-        <div className="work-header">
-          <div className="section-tag">03 / Selected Work</div>
-          <h2 className="work-title">Featured Projects</h2>
-        </div>
+        <ScrollReveal direction="up" distance={30} duration={0.6}>
+          <div className="work-header">
+            <div className="section-tag">03 / Selected Work</div>
+            <h2 className="work-title">Featured Projects</h2>
+          </div>
+        </ScrollReveal>
 
         <div className="projects-list">
           {PROJECTS.map((proj, idx) => {
             const isReversed = idx % 2 === 1;
             return (
-              <article
+              <ScrollReveal
                 key={proj.id}
-                className={`project-row ${isReversed ? "reversed" : ""}`}
-                onClick={() => setSelectedProject(proj)}
-                tabIndex={0}
-                role="button"
-                aria-label={`Open case study for ${proj.name}`}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setSelectedProject(proj);
-                  }
-                }}
+                direction="up"
+                distance={35}
+                duration={0.7}
+                delay={idx * 0.08}
               >
-                {/* Visual Art Panel */}
-                <div className="project-visual-col">
-                  <div
-                    className="project-visual-panel"
-                    dangerouslySetInnerHTML={{ __html: proj.artSvg }}
-                  />
-                </div>
-
-                {/* Info Column */}
-                <div className="project-info-col">
-                  <span className="project-category">{proj.category}</span>
-                  <h3 className="project-name">{proj.name}</h3>
-                  <p className="project-description">{proj.description}</p>
-
-                  <div className="project-pills">
-                    {proj.stack.map((st) => (
-                      <span key={st} className="project-pill">
-                        {st}
-                      </span>
-                    ))}
+                <article
+                  className={`project-row ${isReversed ? "reversed" : ""}`}
+                  onClick={() => setSelectedProject(proj)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Open case study for ${proj.name}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSelectedProject(proj);
+                    }
+                  }}
+                >
+                  {/* Visual Art Panel */}
+                  <div className="project-visual-col">
+                    <div
+                      className="project-visual-panel"
+                      dangerouslySetInnerHTML={{ __html: proj.artSvg }}
+                    />
                   </div>
 
-                  <div className="project-outcome">
-                    <span>Outcome:</span>
-                    <span className="project-outcome-metric">{proj.outcome}</span>
-                  </div>
+                  {/* Info Column */}
+                  <div className="project-info-col">
+                    <span className="project-category">{proj.category}</span>
+                    <h3 className="project-name">{proj.name}</h3>
+                    <p className="project-description">{proj.description}</p>
 
-                  <div className="case-study-prompt">Explore Case Study ↗</div>
-                </div>
-              </article>
+                    <div className="project-pills">
+                      {proj.stack.map((st) => (
+                        <span key={st} className="project-pill">
+                          {st}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="project-outcome">
+                      <span>Outcome:</span>
+                      <span className="project-outcome-metric">{proj.outcome}</span>
+                    </div>
+
+                    <div className="case-study-prompt">Explore Case Study ↗</div>
+                  </div>
+                </article>
+              </ScrollReveal>
             );
           })}
         </div>
       </div>
 
-      {/* FULL-SCREEN SLIDE-UP CASE STUDY OVERLAY */}
-      <div
-        className={`case-study-overlay ${selectedProject ? "open" : ""}`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title-el"
-      >
+      {/* FULL-SCREEN SLIDE-UP CASE STUDY OVERLAY WITH SMOOTH TRANSITION */}
+      <AnimatePresence>
         {selectedProject && (
-          <>
-            <button
-              className="case-study-close-btn"
-              onClick={() => setSelectedProject(null)}
-              aria-label="Close Case Study"
+          <motion.div
+            className="case-study-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title-el"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <motion.div
+              className="case-study-motion-wrap"
+              initial={{ opacity: 0, y: 50, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.98 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
-              ✕
-            </button>
+              <button
+                className="case-study-close-btn"
+                onClick={() => setSelectedProject(null)}
+                aria-label="Close Case Study"
+              >
+                ✕
+              </button>
 
-            <div className="container">
-              <div
-                className="modal-hero-art"
-                dangerouslySetInnerHTML={{ __html: selectedProject.artSvg }}
-              />
+              <div className="container">
+                <div
+                  className="modal-hero-art"
+                  dangerouslySetInnerHTML={{ __html: selectedProject.artSvg }}
+                />
 
-              <div className="modal-header-section">
-                <div className="modal-category">{selectedProject.category}</div>
-                <h2 className="modal-title" id="modal-title-el">
-                  {selectedProject.name}
-                </h2>
-                <div className="modal-stack-row">
-                  {selectedProject.stack.map((st) => (
-                    <span
-                      key={st}
-                      className="project-pill"
-                      style={{ fontSize: "0.8rem", padding: "0.4rem 0.9rem" }}
-                    >
-                      {st}
-                    </span>
+                <div className="modal-header-section">
+                  <div className="modal-category">{selectedProject.category}</div>
+                  <h2 className="modal-title" id="modal-title-el">
+                    {selectedProject.name}
+                  </h2>
+                  <div className="modal-stack-row">
+                    {selectedProject.stack.map((st) => (
+                      <span
+                        key={st}
+                        className="project-pill"
+                        style={{ fontSize: "0.8rem", padding: "0.4rem 0.9rem" }}
+                      >
+                        {st}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="case-study-grid">
+                  {selectedProject.chapters.map((ch, i) => (
+                    <div key={i} className="case-study-chapter">
+                      <h4 className="chapter-heading">{ch.title}</h4>
+                      <div className="chapter-content">
+                        <p>{ch.body}</p>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
-
-              <div className="case-study-grid">
-                {selectedProject.chapters.map((ch, i) => (
-                  <div key={i} className="case-study-chapter">
-                    <h4 className="chapter-heading">{ch.title}</h4>
-                    <div className="chapter-content">
-                      <p>{ch.body}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
+            </motion.div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
 
       <style>{`
         .work-section {
@@ -523,17 +552,16 @@ const Work = () => {
         .case-study-overlay {
           position: fixed;
           inset: 0;
-          background: var(--ink);
+          background: rgba(8, 8, 10, 0.95);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           z-index: 10001;
           overflow-y: auto;
-          transform: translateY(100%);
-          transition: transform 0.55s var(--ease-out);
-          will-change: transform;
           padding: clamp(2rem, 5vh, 4rem) 0 6rem;
         }
 
-        .case-study-overlay.open {
-          transform: translateY(0%);
+        .case-study-motion-wrap {
+          width: 100%;
         }
 
         .case-study-close-btn {

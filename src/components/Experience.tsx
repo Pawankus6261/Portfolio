@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 interface TrajectoryItem {
   id: string;
@@ -202,99 +204,115 @@ const Experience = () => {
   return (
     <section className="experience-section" id="experience">
       <div className="container">
-        <div className="section-tag">04 / Trajectory & Pedigree</div>
+        <ScrollReveal direction="up" distance={25} duration={0.5}>
+          <div className="section-tag">04 / Trajectory & Pedigree</div>
+        </ScrollReveal>
 
-        <div className="trajectory-header">
-          <h2 className="work-title">Experience & Academics</h2>
-          <p className="trajectory-subtitle">
-            Chronicle of engineering leadership, Google & GFG ambassadorship, academic journey, and verified technical credentials.
-          </p>
-        </div>
+        <ScrollReveal direction="up" distance={30} duration={0.65} delay={0.1}>
+          <div className="trajectory-header">
+            <h2 className="work-title">Experience & Academics</h2>
+            <p className="trajectory-subtitle">
+              Chronicle of engineering leadership, Google & GFG ambassadorship, academic journey, and verified technical credentials.
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Category Filter Pills */}
-        <div className="filter-pill-row" role="tablist" aria-label="Trajectory filters">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              role="tab"
-              aria-selected={activeFilter === cat.id}
-              className={`filter-btn ${activeFilter === cat.id ? "active" : ""}`}
-              onClick={() => setActiveFilter(cat.id)}
-            >
-              {cat.label}
-              <span className="filter-count">
-                {cat.id === "all"
-                  ? TRAJECTORY_DATA.length
-                  : TRAJECTORY_DATA.filter((i) => i.category === cat.id).length}
-              </span>
-            </button>
-          ))}
-        </div>
+        <ScrollReveal direction="up" distance={20} duration={0.5} delay={0.15}>
+          <div className="filter-pill-row" role="tablist" aria-label="Trajectory filters">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                role="tab"
+                aria-selected={activeFilter === cat.id}
+                className={`filter-btn ${activeFilter === cat.id ? "active" : ""}`}
+                onClick={() => setActiveFilter(cat.id)}
+              >
+                {cat.label}
+                <span className="filter-count">
+                  {cat.id === "all"
+                    ? TRAJECTORY_DATA.length
+                    : TRAJECTORY_DATA.filter((i) => i.category === cat.id).length}
+                </span>
+              </button>
+            ))}
+          </div>
+        </ScrollReveal>
 
-        {/* Trajectory Items List */}
+        {/* Trajectory Items List with Smooth Filter Transition */}
         <div className="exp-list">
-          {filteredItems.map((item) => (
-            <div key={item.id} className="exp-item">
-              <div className="exp-year-col">
-                <span className="exp-year">{item.year}</span>
-                {item.badge && <span className="exp-badge">{item.badge}</span>}
-                {item.period && <span className="exp-period">{item.period}</span>}
-              </div>
-
-              <div className="exp-details">
-                <div className="exp-title-row">
-                  <h3 className="exp-role-title">{item.title}</h3>
-                  {item.link && (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="exp-link-icon"
-                      aria-label={`Verify credential or view link for ${item.title}`}
-                    >
-                      ↗
-                    </a>
-                  )}
+          <AnimatePresence mode="popLayout">
+            {filteredItems.map((item) => (
+              <motion.div
+                key={item.id}
+                className="exp-item"
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="exp-year-col">
+                  <span className="exp-year">{item.year}</span>
+                  {item.badge && <span className="exp-badge">{item.badge}</span>}
+                  {item.period && <span className="exp-period">{item.period}</span>}
                 </div>
 
-                <div className="exp-org-row">
-                  <span className="exp-role-org">{item.org}</span>
-                  {item.credentialId && (
-                    <span className="exp-credential-tag">
-                      <span className="credential-label">ID:</span>
-                      <span className="credential-code">{item.credentialId}</span>
-                    </span>
-                  )}
-                </div>
-
-                <p className="exp-desc">{item.desc}</p>
-
-                {item.highlights && item.highlights.length > 0 && (
-                  <ul className="exp-highlights">
-                    {item.highlights.map((hl, i) => (
-                      <li key={i} className="exp-highlight-item">
-                        <span className="bullet-point">▸</span>
-                        <span>{hl}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {item.link && (
-                  <div className="exp-action-row">
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="exp-verify-pill"
-                    >
-                      Verify Credential ↗
-                    </a>
+                <div className="exp-details">
+                  <div className="exp-title-row">
+                    <h3 className="exp-role-title">{item.title}</h3>
+                    {item.link && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="exp-link-icon"
+                        aria-label={`Verify credential or view link for ${item.title}`}
+                      >
+                        ↗
+                      </a>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          ))}
+
+                  <div className="exp-org-row">
+                    <span className="exp-role-org">{item.org}</span>
+                    {item.credentialId && (
+                      <span className="exp-credential-tag">
+                        <span className="credential-label">ID:</span>
+                        <span className="credential-code">{item.credentialId}</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="exp-desc">{item.desc}</p>
+
+                  {item.highlights && item.highlights.length > 0 && (
+                    <ul className="exp-highlights">
+                      {item.highlights.map((hl, i) => (
+                        <li key={i} className="exp-highlight-item">
+                          <span className="bullet-point">▸</span>
+                          <span>{hl}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {item.link && (
+                    <div className="exp-action-row">
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="exp-verify-pill"
+                      >
+                        Verify Credential ↗
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
 

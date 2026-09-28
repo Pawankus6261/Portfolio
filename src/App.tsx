@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { SmoothScrollProvider } from "@/context/SmoothScrollContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -10,6 +12,7 @@ import Experience from "@/components/Experience";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import BackToTop from "@/components/BackToTop";
 
 const SESSION_STORAGE_KEY = "pawan_portfolio_visited";
 
@@ -31,13 +34,19 @@ const App = () => {
   };
 
   return (
-    <>
-      {isLoading && (
-        <LoadingScreen onComplete={handleLoadingComplete} />
-      )}
+    <SmoothScrollProvider>
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <LoadingScreen onComplete={handleLoadingComplete} />
+        )}
+      </AnimatePresence>
       <CustomCursor />
       <Navbar isReady={isSiteReady} />
-      <main>
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isSiteReady ? 1 : 0 }}
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+      >
         <Hero isReady={isSiteReady} />
         <Marquee />
         <About />
@@ -45,9 +54,10 @@ const App = () => {
         <Work />
         <Experience />
         <Contact />
-      </main>
+      </motion.main>
       <Footer />
-    </>
+      <BackToTop />
+    </SmoothScrollProvider>
   );
 };
 

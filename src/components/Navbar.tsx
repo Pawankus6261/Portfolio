@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useSmoothScroll } from "@/context/SmoothScrollContext";
 
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
@@ -16,21 +18,26 @@ interface NavbarProps {
 const Navbar = ({ isReady = true }: NavbarProps) => {
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinksWrapRef = useRef<HTMLDivElement>(null);
   const activePillRef = useRef<HTMLDivElement>(null);
 
-  // Scroll listener for progress bar, shrink state, and active section
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  const { scrollTo: smoothScrollTo, stop: stopScroll, start: startScroll } = useSmoothScroll();
+
+  // Scroll listener for shrink state and active section
   useEffect(() => {
     let ticking = false;
 
     const onScroll = () => {
       const scrollY = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollY / (docHeight || 1)) * 100;
-      setScrollProgress(progress);
       setScrolled(scrollY > 40);
 
       // Detect active section
@@ -74,32 +81,35 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
     }
   }, [activeSection]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll and Lenis scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
+      stopScroll();
     } else {
       document.body.style.overflow = "";
+      startScroll();
     }
     return () => {
       document.body.style.overflow = "";
+      startScroll();
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, stopScroll, startScroll]);
 
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      smoothScrollTo(element, { offset: -50, duration: 1.25 });
     }
   };
 
   return (
     <>
-      {/* Scroll progress bar */}
-      <div
+      {/* Scroll progress bar with spring physics */}
+      <motion.div
         id="scroll-progress"
-        style={{ width: `${scrollProgress}%` }}
+        style={{ scaleX, transformOrigin: "0%" }}
         aria-hidden="true"
       />
 

@@ -42,9 +42,33 @@ html {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
   overflow-x: hidden;
   width: 100%;
+}
+
+/* Lenis Smooth Scroll Configuration */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 body {
@@ -123,11 +147,13 @@ img, svg {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2.5px;
-  width: 0%;
-  background: var(--accent);
-  z-index: 10000;
-  transition: width 0.1s linear;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #8391ff);
+  z-index: 100000;
+  transform-origin: 0%;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(91, 108, 255, 0.5);
 }
 
 /* Custom Cursor */

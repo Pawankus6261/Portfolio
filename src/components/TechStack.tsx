@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/animations/ScrollReveal";
 
 interface TechItem {
   name: string;
@@ -32,46 +34,69 @@ const TechStack = () => {
   return (
     <section className="stack-section" id="stack">
       <div className="container">
-        <div className="stack-header">
-          <div>
-            <div className="section-tag" style={{ color: "var(--ink)" }}>
-              02 / Technology Ecosystem
+        <ScrollReveal direction="up" distance={30} duration={0.65}>
+          <div className="stack-header">
+            <div>
+              <div className="section-tag" style={{ color: "var(--ink)" }}>
+                02 / Technology Ecosystem
+              </div>
+              <h2 className="stack-title">Engineering Arsenal</h2>
             </div>
-            <h2 className="stack-title">Engineering Arsenal</h2>
+            <p className="stack-subtitle">
+              An interactive map of core tools and frameworks I leverage to design, optimize, and deploy resilient digital artifacts.
+            </p>
           </div>
-          <p className="stack-subtitle">
-            An interactive map of core tools and frameworks I leverage to design, optimize, and deploy resilient digital artifacts.
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Giant Interactive Word Cloud */}
-        <div className={`word-cloud-container ${isHovered ? "has-hover" : ""}`}>
+        <StaggerContainer
+          className={`word-cloud-container ${isHovered ? "has-hover" : ""}`}
+          staggerDelay={0.04}
+          delayChildren={0.1}
+        >
           {TECHNOLOGIES.map((item) => (
-            <button
-              key={item.name}
-              className={`cloud-tag ${activeTech.name === item.name ? "active-tag" : ""}`}
-              onClick={() => setActiveTech(item)}
-              onMouseEnter={() => {
-                setActiveTech(item);
-                setIsHovered(true);
-              }}
-              onFocus={() => {
-                setActiveTech(item);
-                setIsHovered(true);
-              }}
-              onMouseLeave={() => setIsHovered(false)}
-              onBlur={() => setIsHovered(false)}
-            >
-              {item.name}
-            </button>
+            <StaggerItem key={item.name} yOffset={16} scale>
+              <motion.button
+                className={`cloud-tag ${activeTech.name === item.name ? "active-tag" : ""}`}
+                onClick={() => setActiveTech(item)}
+                onMouseEnter={() => {
+                  setActiveTech(item);
+                  setIsHovered(true);
+                }}
+                onFocus={() => {
+                  setActiveTech(item);
+                  setIsHovered(true);
+                }}
+                onMouseLeave={() => setIsHovered(false)}
+                onBlur={() => setIsHovered(false)}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              >
+                {item.name}
+              </motion.button>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
-        {/* Dynamic Contextual Readout Line */}
-        <div className="stack-readout-panel">
-          <span className="readout-tag-name">{activeTech.name}</span>
-          <span className="readout-description">{activeTech.desc}</span>
-        </div>
+        {/* Dynamic Contextual Readout Line with Smooth Cross-Fade Transition */}
+        <ScrollReveal direction="up" distance={20} duration={0.5} delay={0.2}>
+          <div className="stack-readout-panel">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTech.name}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: "flex", alignItems: "center", gap: "1.25rem", width: "100%", flexWrap: "wrap" }}
+              >
+                <span className="readout-tag-name">{activeTech.name}</span>
+                <span className="readout-description">{activeTech.desc}</span>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </ScrollReveal>
       </div>
 
       <style>{`

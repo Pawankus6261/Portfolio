@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/animations/ScrollReveal";
 
 const ABOUT_TEXT =
   "I am a software engineer and AI researcher obsessed with the convergence of intelligent deep models and tactile digital systems. Currently pursuing B.Tech in CSE with specialization in AI & Machine Learning (2024–2028), while leading DevLinkHub as founder and community head. I bridge complex theoretical architectures into high-throughput, beautifully orchestrated production products that perform under real-world scale.";
@@ -42,26 +43,32 @@ const About = () => {
   return (
     <section className="about-section" id="about">
       <div className="container">
-        <div className="section-tag">01 / About</div>
+        <ScrollReveal direction="up" distance={20} duration={0.5}>
+          <div className="section-tag">01 / About</div>
+        </ScrollReveal>
 
         {/* Huge Editorial Statement with Progressive Word Lighting */}
-        <p className="about-paragraph" ref={paragraphRef}>
-          {words.map((word, idx) => (
-            <span key={idx}>
-              <span className="scroll-word">{word}</span>
-            </span>
-          ))}
-        </p>
+        <ScrollReveal direction="up" distance={30} duration={0.7} delay={0.1}>
+          <p className="about-paragraph" ref={paragraphRef}>
+            {words.map((word, idx) => (
+              <span key={idx}>
+                <span className="scroll-word">{word}</span>
+              </span>
+            ))}
+          </p>
+        </ScrollReveal>
 
-        {/* Minimal Facts Row */}
-        <div className="facts-grid">
+        {/* Minimal Facts Row with Staggered Entrance */}
+        <StaggerContainer className="facts-grid" delayChildren={0.15} staggerDelay={0.09}>
           {FACTS.map((fact, idx) => (
-            <div key={idx} className="fact-item">
-              <span className="fact-label">{fact.label}</span>
-              <span className="fact-value">{fact.value}</span>
-            </div>
+            <StaggerItem key={idx}>
+              <div className="fact-item">
+                <span className="fact-label">{fact.label}</span>
+                <span className="fact-value">{fact.value}</span>
+              </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
 
       <style>{`

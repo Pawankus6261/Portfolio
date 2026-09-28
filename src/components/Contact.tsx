@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/animations/ScrollReveal";
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
@@ -24,118 +25,133 @@ const Contact = () => {
       </svg>
 
       <div className="container contact-container">
-        <div className="contact-eyebrow">05 / Initiate Conversation</div>
-        <h2 className="contact-hero-statement">
-          Let’s build something worth remembering.
-        </h2>
+        <ScrollReveal direction="up" distance={20} duration={0.5}>
+          <div className="contact-eyebrow">05 / Initiate Conversation</div>
+        </ScrollReveal>
 
-        <div className="contact-actions-grid">
-          <a
-            href="mailto:contact.pawan62@gmail.com"
-            className="contact-pill-btn contact-btn-dark"
-          >
-            <span>Send Email</span>
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="7" y1="17" x2="17" y2="7" />
-              <polyline points="7 7 17 7 17 17" />
-            </svg>
-          </a>
+        <ScrollReveal direction="up" distance={30} duration={0.65} delay={0.1}>
+          <h2 className="contact-hero-statement">
+            Let’s build something worth remembering.
+          </h2>
+        </ScrollReveal>
 
-          <button
-            onClick={handleCopyEmail}
-            className="contact-pill-btn contact-btn-outline"
-          >
-            <span>{copied ? "Email Copied!" : "Copy Email"}</span>
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+        <StaggerContainer className="contact-actions-grid" delayChildren={0.15} staggerDelay={0.07}>
+          <StaggerItem scale>
+            <a
+              href="mailto:contact.pawan62@gmail.com"
+              className="contact-pill-btn contact-btn-dark"
             >
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-            </svg>
-          </button>
+              <span>Send Email</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </StaggerItem>
 
-          <a
-            href="https://github.com/Pawankus6261"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-pill-btn contact-btn-outline"
-          >
-            <span>GitHub</span>
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <StaggerItem scale>
+            <button
+              onClick={handleCopyEmail}
+              className="contact-pill-btn contact-btn-outline"
             >
-              <line x1="7" y1="17" x2="17" y2="7" />
-              <polyline points="7 7 17 7 17 17" />
-            </svg>
-          </a>
+              <span>{copied ? "Email Copied!" : "Copy Email"}</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+            </button>
+          </StaggerItem>
 
-          <a
-            href="https://www.linkedin.com/in/pawan-kushwaha-ai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-pill-btn contact-btn-outline"
-          >
-            <span>LinkedIn</span>
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <StaggerItem scale>
+            <a
+              href="https://github.com/Pawankus6261"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-pill-btn contact-btn-outline"
             >
-              <line x1="7" y1="17" x2="17" y2="7" />
-              <polyline points="7 7 17 7 17 17" />
-            </svg>
-          </a>
+              <span>GitHub</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </StaggerItem>
 
-          <a
-            href="CV_Pawan.pdf"
-            download="Pawan_Kushwaha_CV.pdf"
-            className="contact-pill-btn contact-btn-outline"
-          >
-            <span>Download CV</span>
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <StaggerItem scale>
+            <a
+              href="https://www.linkedin.com/in/pawan-kushwaha-ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-pill-btn contact-btn-outline"
             >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-          </a>
-        </div>
+              <span>LinkedIn</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </StaggerItem>
+
+          <StaggerItem scale>
+            <a
+              href="CV_Pawan.pdf"
+              download="Pawan_Kushwaha_CV.pdf"
+              className="contact-pill-btn contact-btn-outline"
+            >
+              <span>Download CV</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+            </a>
+          </StaggerItem>
+        </StaggerContainer>
       </div>
 
       {/* Copy Toast */}
