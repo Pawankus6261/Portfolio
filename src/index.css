@@ -1,215 +1,232 @@
-/* --- ORIGINAL FILE CONTENT --- */
-@import url('https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap');
-@import "tailwindcss";
-
-* {
-  font-family: "Momo Trust Display", sans-serif;
-  font-weight: 400;
-}
-
+/* =============================================
+   DESIGN SYSTEM — PAWAN KUSHWAHA PORTFOLIO
+   Awwwards-Level Creative Developer Identity
+   ============================================= */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
 :root {
-  --color-primary: #5044E5;
-}
-.flex-grow {
-    flex-grow: 1;
-}
-.flex-shrink {
-    flex-shrink: 1;
-}
-.bg-gradient-to-br {
-    --tw-gradient-position: to bottom right in oklab;
-    background-image: linear-gradient(var(--tw-gradient-stops));
-}
-/* --- ALL 3 KEYFRAMES --- */
+  /* Color Palette */
+  --ink: #08080a;
+  --bone: #efece6;
+  --deep-gray: #16161a;
+  --surface: #121216;
+  --muted-gray: #85858f;
+  --accent: #5b6cff;
+  --accent-hover: #4858e6;
+  --accent-dim: rgba(91, 108, 255, 0.12);
+  --accent-glow: rgba(91, 108, 255, 0.35);
+  --hairline: rgba(239, 236, 230, 0.08);
+  --hairline-strong: rgba(239, 236, 230, 0.18);
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+  /* Typography */
+  --font-display: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
-/* --- ADDED THIS --- */
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  /* Easing */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* --- ADDED THIS --- */
-@keyframes sweep {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-/* ... (keep all your existing CSS) ... */
-
-/* --- ADD THIS FOR THE RECHARTS TOOLTIPS --- */
-.recharts-tooltip-wrapper .recharts-default-tooltip {
-  background-color: #ffffff !important;
-  border-color: #dddddd !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-}
-/* ============================================
---- PITCH BLACK THEME (FIXED HOVERS) ---
-Using: #000000, #090909, #0c0c0b, #101010, #212121
-With Lighter Hovers for better visibility.
-============================================
-*/
-
-/* This targets the <html> tag when it has our custom class */
-.theme-dark {
-  background-color: #000000; /* True black background */
-  color-scheme: dark;
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* --- Layouts --- */
-.theme-dark .bg-gray-100 {
-  background-color: #000000; /* True black */
-}
-.theme-dark .bg-white {
-  background-color: #101010; /* Main card background */
-}
-.theme-dark .border-b,
-.theme-dark .border-gray-200,
-.theme-dark .border-gray-300,
-.theme-dark .border {
-  border-color: #212121; /* Borders */
-}
-
-/* --- Typography (Faded Colors) --- */
-.theme-dark .text-gray-900 {
-  color: #d4d4d4; /* Faded white (light gray) */
-}
-.theme-dark .text-gray-800 {
-  color: #a3a3a3; /* Faded light gray */
-}
-.theme-dark .text-gray-700 {
-  color: #a3a3a3; /* Faded medium gray */
-}
-.theme-dark .text-gray-600 {
-  color: #737373; /* Faded dark gray */
-}
-.theme-dark .text-gray-500 {
-  color: #737373; /* Faded dark gray */
-}
-.theme-dark .placeholder-gray-400::placeholder {
-  color: #525252; /* Darker placeholder */
-}
-.theme-dark input {
-  color: #d4d4d4; /* Faded white */
-}
-.theme-dark textarea {
-  color: #d4d4d4; /* Faded white */
+html {
+  font-size: 16px;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
 }
 
-/* --- Components & Cards --- */
-.theme-dark .shadow-lg,
-.theme-dark .shadow-md,
-.theme-dark .shadow-sm {
-  border: 1px solid #212121; /* Borders */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+body {
+  background: var(--ink);
+  color: var(--bone);
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  cursor: default;
+  touch-action: manipulation;
 }
 
-.theme-dark .bg-gray-50 {
-  background-color: #090909; /* Secondary BG */
-}
-.theme-dark tr.hover\:bg-gray-50:hover {
-  background-color: #2a2a2a; /* <<< FIX: Lighter, visible hover */
-}
-.theme-dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
-  border-color: #212121; /* divide-gray-700 */
+::selection {
+  background: var(--accent);
+  color: var(--bone);
 }
 
-/* --- Header --- */
-.theme-dark .text-gray-500.hover\:text-gray-700:hover {
-  color: #d4d4d4; /* Faded white */
-}
-.theme-dark .hover\:bg-gray-100:hover {
-  background-color: #2a2a2a; /* <<< FIX: Lighter, visible hover */
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-/* --- Stat Card (Faded) --- */
-.theme-dark .text-green-600 {
-  color: #4ade80; /* Faded green */
-}
-.theme-dark .text-red-600 {
-  color: #f87171; /* Faded red */
-}
-
-/* --- Tables & Lists (Faded) --- */
-.theme-dark .bg-green-100 {
-  background-color: rgba(74, 222, 128, 0.05); /* Very faint green */
-  color: #4ade80; /* Faded green */
-}
-.theme-dark .bg-blue-100 {
-  background-color: rgba(96, 165, 250, 0.05); /* Very faint blue */
-  color: #60a5fa; /* Faded blue */
-}
-.theme-dark .text-green-700 {
-  color: #4ade80; /* Faded green */
-}
-.theme-dark .text-blue-700 {
-  color: #60a5fa; /* Faded blue */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: inherit;
 }
 
-/* --- Inputs & Buttons --- */
-.theme-dark .bg-gray-100 {
-  background-color: #0c0c0b; /* Dark input */
-}
-.theme-dark .hover\:bg-gray-200:hover {
-  background-color: #333333; /* <<< FIX: Lighter, visible hover */
+img, svg {
+  display: block;
+  max-width: 100%;
 }
 
-/* --- Other Pages --- */
-.theme-dark .border-dashed {
-  border-color: #212121;
-}
-.theme-dark .text-blue-600 {
-  color: #60a5fa; /* Faded blue */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
-/* --- Recharts Dark Mode --- */
-.theme-dark .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background-color: #000000 !important; /* True black */
-  border-color: #212121 !important; /* Dark border */
-  color: #a3a3a3 !important; /* Faded text */
-}
-.theme-dark .recharts-text,
-.theme-dark .recharts-legend-item-text {
-   fill: #737373 !important; /* Faded gray text */
+.container {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 5vw, 4rem);
 }
 
-/* --- Skeleton Loader Dark Mode --- */
-.theme-dark .theme-dark\:bg-gray-700 { 
-  background-color: #212121 !important; 
+/* Subtle Film Grain */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* --- Dropdown Hovers (NEW FIX) --- */
-.theme-dark .theme-dark\:hover\:bg-gray-700:hover {
-  background-color: #2a2a2a !important; /* Lighter hover */
+/* Cursor Spotlight */
+.cursor-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91, 108, 255, 0.12) 0%, rgba(91, 108, 255, 0.03) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s ease;
+  will-change: transform;
 }
-.theme-dark .theme-dark\:hover\:bg-gray-700\/50:hover {
-  background-color: #2a2a2a !important; /* Lighter hover */
-}
-.theme-dark .theme-dark\:hover\:bg-red-500\/10:hover {
-  background-color: rgba(239, 68, 68, 0.1) !important;
-}
-/* In src/index.css */
 
-.bg-gradient-instagram {
-  background-image: linear-gradient(
-    to bottom right, 
-    #8a3ab9, 
-    #e95950, 
-    #fccc63
-  );
+/* Scroll Progress */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: var(--accent);
+  z-index: 10000;
+  transition: width 0.1s linear;
 }
-::-webkit-scrollbar{
-  width:8px;
+
+/* Custom Cursor */
+.custom-cursor-dot,
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 100005;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.12s ease-out;
+  will-change: transform, left, top;
 }
-::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-  width: 4px;
+
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--bone);
 }
-::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
+
+.custom-cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(239, 236, 230, 0.35);
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), border-color 0.25s ease, transform 0.1s linear;
+}
+
+body.cursor-hover .custom-cursor-ring {
+  width: 64px;
+  height: 64px;
+  border-color: var(--accent);
+  background: rgba(91, 108, 255, 0.08);
+  backdrop-filter: blur(2px);
+}
+
+body.cursor-hover .custom-cursor-dot {
+  transform: translate(-50%, -50%) scale(1.6);
+  background: var(--accent);
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .custom-cursor-dot, .custom-cursor-ring {
+    display: none !important;
+  }
+}
+
+/* Outlined Text Utility - Crisp Outer Silhouette Without Internal Glitch Overlaps */
+.outline-text {
+  font-family: "Caveat", cursive;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  -webkit-text-stroke: 1.8px var(--bone);
+  paint-order: stroke fill;
+  transition: all 0.35s var(--ease-out);
+}
+
+.outline-text:hover {
+  color: var(--bone);
+  -webkit-text-stroke-color: var(--bone);
+}
+
+.outline-text.accent-hover {
+  -webkit-text-stroke-color: rgba(91, 108, 255, 0.85);
+}
+
+.outline-text.accent-hover:hover {
+  color: var(--accent);
+  -webkit-text-stroke-color: var(--accent);
+}
+
+/* Section Tag */
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-tag::after {
+  content: '';
+  height: 1px;
+  width: 48px;
+  background: var(--hairline-strong);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

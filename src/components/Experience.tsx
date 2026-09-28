@@ -1,369 +1,601 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CalendarDays, MapPin, ExternalLink } from "lucide-react";
-// --- NEW: Import motion and Variants ---
-import { motion, Variants } from "framer-motion";
+import { useState } from "react";
 
-// --- Constants (unchanged) ---
-const experiences = [
+interface TrajectoryItem {
+  id: string;
+  category: "experience" | "education" | "certificates";
+  year: string;
+  period?: string;
+  title: string;
+  org: string;
+  badge?: string;
+  desc: string;
+  credentialId?: string;
+  highlights?: string[];
+  link?: string;
+}
+
+const TRAJECTORY_DATA: TrajectoryItem[] = [
+  // =============================================
+  // 1. PROFESSIONAL EXPERIENCE & LEADERSHIP (Started 2024)
+  // =============================================
   {
-    title: "Freelance Full-Stack Developer & Graphic Designer",
-    company: "Self-Employed",
-    location: "Remote",
-    period: "2023 – Present",
-    type: "Freelance",
-    description:
-      "Designing and developing complete digital solutions — from responsive websites to custom web applications and creative brand designs. Managing end-to-end project delivery with focus on performance, aesthetics, and user experience.",
-    achievements: [
-      "Successfully completed 25+ projects across various domains including portfolios, business sites, and dashboards",
-      "Delivered visually engaging designs and scalable full-stack applications with high client satisfaction",
-      "Implemented responsive layouts and intuitive interfaces improving overall user engagement"
+    id: "devlinkhub",
+    category: "experience",
+    year: "2026",
+    period: "Jul 2026 — Present",
+    title: "Founder & Community Head",
+    org: "DevLinkHub · Self-employed",
+    badge: "Founder & Leadership",
+    desc: "Founded and lead DevLinkHub, a student-focused tech community connecting developers, innovators, and aspiring tech professionals. Building an open collaborative ecosystem through community hackathons, project showcases, and peer-to-peer mentoring with 1,200+ members.",
+    highlights: [
+      "Architected DevLinkHub platform with Next.js 14 App Router, React 18, TypeScript, and FastAPI backend with SQLite + ORM.",
+      "Engineered Neo-Brutalist design system, tactile retro cards, interactive terminal CLI, and automated registration pipeline.",
+      "Orchestrated 15+ collaborative open-source tech sprints, code reviews, and community workshops.",
+      "Core skills: Event Management, Team Leadership, Full-Stack Architecture, and Community Building.",
     ],
-    skills: [
-      "HTML5",
-      "CSS3",
-      "JavaScript",
-      "React",
-      "Python",
-      "PostgreSQL",
-      "MongoDB",
-      "Canva",
-      "Figma",
-      "Photoshop",
-    ]
+    link: "https://github.com/Pawankus6261",
   },
   {
-    title: "Freelance Visual & Branding Designer",
-    company: "Independent Projects",
-    location: "Remote",
-    period: "2022 – Present",
-    type: "Freelance",
-    description:
-      "Creating brand identities, social-media content, and marketing visuals for startups, student communities, and local businesses.",
-    achievements: [
-      "Designed logos, brand kits, and promotional materials for 15+ clients",
-      "Built strong visual branding strategies enhancing digital reach",
-      "Maintained consistent brand identity and visual harmony across platforms"
+    id: "gfg-rep",
+    category: "experience",
+    year: "2026",
+    period: "Jan 2026 — Jun 2026 · 6 mos",
+    title: "Campus Representative",
+    org: "GeeksforGeeks · Internship",
+    badge: "Campus Leadership",
+    desc: "Played a pivotal role in fostering a collaborative technical environment at college through GeeksforGeeks, driving technical problem-solving, DSA workshops, and student developer initiatives on-site.",
+    highlights: [
+      "Organized campus-wide coding challenges, algorithmic bootcamps, and technical contests.",
+      "Mentored 200+ students on Data Structures & Algorithms, interview prep, and competitive programming.",
+      "Coordinated with student bodies to expand technical awareness and participation in hackathons.",
+      "Core skills: Leadership, Critical Thinking, Event Management, and Technical Mentorship.",
     ],
-    skills: [
-      "Canva",
-      "Figma",
-      "Photoshop",
-      "Illustrator",
-      "Branding",
-      "Logo Design",
-      "Social Media Graphics"
-    ]
-  }
+  },
+  {
+    id: "google-ambassador",
+    category: "experience",
+    year: "2025",
+    period: "Sep 2025 — Jan 2026 · 5 mos",
+    title: "Google Student Ambassador",
+    org: "Google · Internship",
+    badge: "Google Ambassador",
+    desc: "Represented Google's developer ecosystem on-site, promoting learning, modern cloud tools, and innovation among students through interactive workshops and developer community programs.",
+    highlights: [
+      "Evangelized Google technologies, Google Cloud, Android, and Machine Learning tools across student cohorts.",
+      "Organized study jams, technical hands-on labs, and hackathons focused on real-world engineering.",
+      "Built bridges between student developers and Google developer resources.",
+      "Core skills: Developer Relations, Public Speaking, Community Building, and Team Leadership.",
+    ],
+  },
+  {
+    id: "freelance-ai",
+    category: "experience",
+    year: "2024",
+    period: "2024 — Present · Engineering",
+    title: "Full Stack Developer & AI Engineer",
+    org: "Independent & Open Source · Started 2024",
+    badge: "AI & Full Stack",
+    desc: "Started professional software engineering journey in 2024, delivering scalable full-stack web applications and AI pipelines. Built high-concurrency FastAPI backends, responsive React dashboards, and computer vision models.",
+    highlights: [
+      "Engineered MediSync Adherence (OCR vision models and patient medication compliance tracking).",
+      "Built FasalSathii (AgriTech deep learning platform for crop pathology detection in 1.4s).",
+      "Developed DRONE-VIDEO-TO-3D-MODAL (computer vision pipeline for 3D point-cloud reconstruction from drone footage).",
+    ],
+    link: "https://github.com/Pawankus6261",
+  },
+
+  // =============================================
+  // 2. ACADEMICS & SCHOOLING (Exact Milestones)
+  // =============================================
+  {
+    id: "btech-college",
+    category: "education",
+    year: "2024",
+    period: "2024 — 2028 · Joined College 2024",
+    title: "B.Tech in Computer Science & Engineering",
+    org: "Bansal Institute of Science & Technology · AI & ML Specialization",
+    badge: "Undergraduate Degree",
+    desc: "Joined college in 2024 to pursue B.Tech in CSE with specialization in Artificial Intelligence and Machine Learning. Active student community founder, Google Student Ambassador, and builder.",
+    highlights: [
+      "Specialized Domain: Deep Learning, Neural Networks, Computer Vision, DSA, DBMS, Operating Systems, Computer Networks.",
+      "Founder & Community Head of DevLinkHub on campus, leading 1,200+ student developers.",
+      "Campus Representative for GeeksforGeeks and Google Student Ambassador.",
+    ],
+  },
+  {
+    id: "school-12th",
+    category: "education",
+    year: "2024",
+    period: "2022 — 2024 · Completed 2024",
+    title: "Senior Secondary Schooling (Class XII — PCM)",
+    org: "Higher Secondary Board Examination · Science Stream",
+    badge: "Class XII (12th Grade)",
+    desc: "Completed Senior Secondary Schooling (Class 12th) in 2024 with a rigorous focus on Physics, Chemistry, Mathematics (PCM), and Computer Science.",
+    highlights: [
+      "Graduated high school in 2024 right before joining B.Tech Computer Science & Engineering.",
+      "Strong foundation in differential calculus, linear algebra, mechanics, and algorithmic thinking.",
+      "Built initial software projects in Python and C++.",
+    ],
+  },
+  {
+    id: "school-10th",
+    category: "education",
+    year: "2022",
+    period: "2020 — 2022 · Completed 2022",
+    title: "Secondary School Examination (Class X)",
+    org: "High School Board Examination",
+    badge: "Class X (10th Grade)",
+    desc: "Completed Secondary Schooling (Class 10th) in 2022 with strong academic honors in Mathematics, Science, and Information Technology.",
+    highlights: [
+      "Completed Class 10th in 2022, establishing early excellence in mathematics and scientific problem solving.",
+    ],
+  },
+
+  // =============================================
+  // 3. CERTIFICATIONS & VERIFIED ACCREDITATIONS
+  // =============================================
+  {
+    id: "cert-genai",
+    category: "certificates",
+    year: "2025",
+    period: "Aug 2025 · Google Cloud & Hack2skill",
+    title: "Gen AI Academy — Google Cloud & Hack2skill",
+    org: "Google Cloud Skills Boost · Hack2skill",
+    badge: "Google Cloud GenAI",
+    credentialId: "2025H2S04GENAI-AI200138",
+    desc: "Comprehensive certification covering Generative AI fundamentals, large language models (LLMs), prompt engineering, Google Cloud AI infrastructure, and multimodal solutions.",
+    link: "https://certificate.hack2skill.com/user/genai12/2025H2S04GENAI-A1200138",
+  },
+  {
+    id: "cert-aws",
+    category: "certificates",
+    year: "2025",
+    period: "May 2025 · Amazon Web Services",
+    title: "AWS Academy Graduate — Cloud Foundations",
+    org: "Amazon Web Services (AWS)",
+    badge: "AWS Certified",
+    desc: "Accreditation in foundational cloud computing architecture, security, compute instances (EC2), storage services (S3), networking (VPC), and distributed cloud economics.",
+    link: "https://www.credly.com/go/6vnhhePC",
+  },
+  {
+    id: "cert-sql",
+    category: "certificates",
+    year: "2025",
+    period: "Apr 2025 · HackerRank",
+    title: "SQL (Basic) Certification",
+    org: "HackerRank",
+    badge: "HackerRank Verified",
+    credentialId: "8BB4A978450F",
+    desc: "Demonstrated proficiency in relational database queries, complex JOIN operations, filtering, grouping, aggregation functions, and subquery optimization.",
+    link: "https://www.hackerrank.com/certificates/8bb4a978450f",
+  },
+  {
+    id: "cert-deloitte",
+    category: "certificates",
+    year: "2024",
+    period: "2024 · Deloitte",
+    title: "Data Analytics Job Simulation",
+    org: "Deloitte / Forage",
+    badge: "Deloitte Verified",
+    credentialId: "FwioH8fW52gtp5ySK",
+    desc: "Practical corporate simulation tackling enterprise analytics problems, data forensics, visualization dashboards, and business insights presentation.",
+  },
 ];
 
-const education = [
-  { degree: "Bachelor of Technology in Computer Science Engineering - AIML", school: "Bansal Institute Of Science And Technology, Bhopal", location: "India", period: "2024 - 2028", grade: "CGPA: 7.81/10", description: "Relevant coursework: Data Structures, Algorithms..." },
-  { degree: "Higher Secondary Education", school: "Govt. Higher Secondary School", location: "India", period: "2022 - 2024", grade: "87% - 70%", description: "Science stream with Computer Science..." },
-];
-const certifications = [
-  
-    {
-      name: "AWS Academy Graduate - Cloud Foundations",
-      issuer: "Amazon Web Services",
-      date: "2025",
-      credentialId: "48be5be9-7dc0-492e-aeed-adf734448498",
-      url: "https://www.credly.com/badges/48be5be9-7dc0-492e-aeed-adf734448498/public_url"
-    },
-    {
-      name: "JavaScript Essentials 1",
-      issuer: "Cisco Networking Academy",
-      date: "2025",
-      credentialId: "a31e2d55-d0a0-4940-b235-af5514f4e4b0",
-      url: "https://www.credly.com/badges/a31e2d55-d0a0-4940-b235-af5514f4e4b0/public_url"
-    },
-    {
-      name: "SQL Basics",
-      issuer: "HackerRank",
-      date: "2025",
-      credentialId: "8bb4a978450f",
-      url: "https://www.hackerrank.com/certificates/8bb4a978450f"
-    },
-    {
-      name: "C++ Essential 1",
-      issuer: "Cisco Networking Academy",
-      date: "2025",
-      credentialId: "ee1a52a2-f411-43dc-a23d-c0fbbeaf7960",
-      url: "https://www.credly.com/badges/ee1a52a2-f411-43dc-a23d-c0fbbeaf7960/public_url"  
-    }
-   
-];
+const CATEGORIES = [
+  { id: "all", label: "All Milestones" },
+  { id: "experience", label: "Experience & Ambassadorship" },
+  { id: "education", label: "Academics & Schooling" },
+  { id: "certificates", label: "Certifications" },
+] as const;
 
-// --- NEW: Animation Variants ---
-
-// Reusable variant for simple fade-in-up animation
-const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeInOut" },
-  },
-};
-
-// Variant for the list container to stagger its children
-const staggerContainer: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1, // Each child animates 0.1s after the previous
-    },
-  },
-};
-
-// Variant for list items sliding in from the left
-const staggerItemLeft: Variants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.4, ease: "easeInOut" },
-  },
-};
-
-// Variant for list items sliding in from the right
-const staggerItemRight: Variants = {
-  hidden: { opacity: 0, x: 20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.4, ease: "easeInOut" },
-  },
-};
+type FilterType = "all" | "experience" | "education" | "certificates";
 
 const Experience = () => {
+  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+
+  const filteredItems =
+    activeFilter === "all"
+      ? TRAJECTORY_DATA
+      : TRAJECTORY_DATA.filter((item) => item.category === activeFilter);
+
   return (
-    // --- NEW: Added overflow-hidden ---
-    <section id="experience" className="py-20 bg-secondary/20 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="experience-section" id="experience">
+      <div className="container">
+        <div className="section-tag">04 / Trajectory & Pedigree</div>
 
-        {/* --- NEW: Animated Hero Section --- */}
-        <motion.div
-          className="text-center mb-16"
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <Badge variant="secondary" className="py-3 px-4 mb-6 bg-secondary/50 backdrop-blur-sm">
-            Experience
-          </Badge>
-          <h2 className="text-4xl lg:text-6xl font-bold mb-6">
-            My{" "}
-            <span className="bg-gradient-primary bg-clip-text text-transparent">
-              Journey
-            </span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            A timeline of my professional experience, education, and continuous
-            learning in the world of technology and development.
+        <div className="trajectory-header">
+          <h2 className="work-title">Experience & Academics</h2>
+          <p className="trajectory-subtitle">
+            Chronicle of engineering leadership, Google & GFG ambassadorship, academic journey, and verified technical credentials.
           </p>
-        </motion.div>
-
-        {/* Experience Section */}
-        <div className="mb-20">
-          {/* --- NEW: Animated h3 --- */}
-          <motion.h3
-            className="text-3xl font-bold mb-12"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            Professional Experience
-          </motion.h3>
-
-          {/* --- NEW: Stagger container for cards --- */}
-          <motion.div
-            className="space-y-8"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            {experiences.map((exp) => (
-              // --- NEW: Wrapper for stagger item ---
-              <motion.div key={exp.title} variants={staggerItemLeft}>
-                <Card className="bg-card/50 backdrop-blur-sm border-border hover:bg-card/70 transition-all duration-300">
-                  <CardHeader className="pb-4">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                      <div>
-                        <h4 className="text-xl font-semibold text-foreground">
-                          {exp.title}
-                        </h4>
-                        <p className="text-primary font-medium">
-                          {exp.company}
-                        </p>
-                      </div>
-                      <div className="flex flex-col lg:items-end gap-2">
-                        <Badge variant="outline" className="w-fit">
-                          {exp.type}
-                        </Badge>
-                        <div className="flex items-center text-sm text-muted-foreground gap-4">
-                          <div className="flex items-center gap-1">
-                            <CalendarDays className="w-4 h-4" />
-                            {exp.period}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
-                            {exp.location}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">
-                      {exp.description}
-                    </p>
-                    <div className="mb-4">
-                      <h5 className="font-medium mb-2">Key Achievements:</h5>
-                      <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                        {exp.achievements.map((achievement) => (
-                          <li key={achievement}>{achievement}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h5 className="font-medium mb-2">Technologies:</h5>
-                      <div className="flex flex-wrap gap-2">
-                        {exp.skills.map((skill) => (
-                          <Badge
-                            key={skill}
-                            variant="secondary"
-                            className="bg-secondary/50"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
 
-        {/* Education & Certifications Grid */}
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Education Section */}
-          <div>
-            {/* --- NEW: Animated h3 --- */}
-            <motion.h3
-              className="text-3xl font-bold mb-8"
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+        {/* Category Filter Pills */}
+        <div className="filter-pill-row" role="tablist" aria-label="Trajectory filters">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              role="tab"
+              aria-selected={activeFilter === cat.id}
+              className={`filter-btn ${activeFilter === cat.id ? "active" : ""}`}
+              onClick={() => setActiveFilter(cat.id)}
             >
-              Education
-            </motion.h3>
+              {cat.label}
+              <span className="filter-count">
+                {cat.id === "all"
+                  ? TRAJECTORY_DATA.length
+                  : TRAJECTORY_DATA.filter((i) => i.category === cat.id).length}
+              </span>
+            </button>
+          ))}
+        </div>
 
-            {/* --- NEW: Stagger container --- */}
-            <motion.div
-              className="space-y-6"
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
-              {education.map((edu) => (
-                // --- NEW: Wrapper for stagger item ---
-                <motion.div key={edu.degree} variants={staggerItemLeft}>
-                  <Card className="bg-card/50 backdrop-blur-sm border-border">
-                    <CardHeader>
-                      <h4 className="text-lg font-semibold">{edu.degree}</h4>
-                      <p className="text-primary font-medium">{edu.school}</p>
-                      <div className="flex items-center text-sm text-muted-foreground gap-4">
-                        <div className="flex items-center gap-1">
-                          <CalendarDays className="w-4 h-4" />
-                          {edu.period}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {edu.location}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="mb-3">
-                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                          {edu.grade}
-                        </Badge>
-                      </div>
-                      <p className="text-muted-foreground text-sm">
-                        {edu.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+        {/* Trajectory Items List */}
+        <div className="exp-list">
+          {filteredItems.map((item) => (
+            <div key={item.id} className="exp-item">
+              <div className="exp-year-col">
+                <span className="exp-year">{item.year}</span>
+                {item.badge && <span className="exp-badge">{item.badge}</span>}
+                {item.period && <span className="exp-period">{item.period}</span>}
+              </div>
 
-          {/* Certifications Section */}
-          <div>
-            {/* --- NEW: Animated h3 --- */}
-            <motion.h3
-              className="text-3xl font-bold mb-8"
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              Certifications
-            </motion.h3>
+              <div className="exp-details">
+                <div className="exp-title-row">
+                  <h3 className="exp-role-title">{item.title}</h3>
+                  {item.link && (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="exp-link-icon"
+                      aria-label={`Verify credential or view link for ${item.title}`}
+                    >
+                      ↗
+                    </a>
+                  )}
+                </div>
 
-            {/* --- NEW: Stagger container --- */}
-            <motion.div
-              className="space-y-4"
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
-              {certifications.map((cert) => (
-                // --- NEW: Changed <a> to motion.a and added variants ---
-                <motion.a
-                  key={cert.name}
-                  href={cert.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
-                  variants={staggerItemRight} // <-- Slides in from the right
-                >
-                  <Card className="bg-card/50 backdrop-blur-sm border-border hover:bg-card/70 transition-all duration-300 group">
-                    <CardHeader className="pb-2">
-                      <div className="flex items-start justify-between">
-                        <h4 className="font-semibold line-clamp-2 group-hover:text-primary transition-colors">
-                          {cert.name}
-                        </h4>
-                        <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                      </div>
-                      <p className="text-sm text-primary">{cert.issuer}</p>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span>{cert.date}</span>
-                        <Badge variant="outline" className="text-xs">
-                          {cert.credentialId}
-                        </Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.a>
-              ))}
-            </motion.div>
-          </div>
+                <div className="exp-org-row">
+                  <span className="exp-role-org">{item.org}</span>
+                  {item.credentialId && (
+                    <span className="exp-credential-tag">
+                      <span className="credential-label">ID:</span>
+                      <span className="credential-code">{item.credentialId}</span>
+                    </span>
+                  )}
+                </div>
+
+                <p className="exp-desc">{item.desc}</p>
+
+                {item.highlights && item.highlights.length > 0 && (
+                  <ul className="exp-highlights">
+                    {item.highlights.map((hl, i) => (
+                      <li key={i} className="exp-highlight-item">
+                        <span className="bullet-point">▸</span>
+                        <span>{hl}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {item.link && (
+                  <div className="exp-action-row">
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="exp-verify-pill"
+                    >
+                      Verify Credential ↗
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      <style>{`
+        .experience-section {
+          padding: clamp(3.5rem, 8vh, 8rem) 0;
+          position: relative;
+          border-bottom: 1px solid var(--hairline);
+        }
+
+        .trajectory-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-bottom: clamp(2rem, 5vh, 4rem);
+          flex-wrap: wrap;
+          gap: 1.5rem;
+        }
+
+        .trajectory-subtitle {
+          font-size: 1.05rem;
+          color: var(--muted-gray);
+          max-width: 44ch;
+          line-height: 1.6;
+        }
+
+        .filter-pill-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.6rem;
+          margin-bottom: clamp(2.5rem, 5vh, 4rem);
+          padding-bottom: 1.25rem;
+          border-bottom: 1px solid var(--hairline);
+        }
+
+        .filter-btn {
+          font-family: var(--font-mono);
+          font-size: 0.78rem;
+          font-weight: 500;
+          padding: 0.5rem 1.1rem;
+          border-radius: 9999px;
+          border: 1px solid var(--hairline-strong);
+          background: var(--deep-gray);
+          color: var(--muted-gray);
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          white-space: nowrap;
+          transition: all 0.25s var(--ease-out);
+        }
+
+        .filter-btn:hover {
+          color: var(--bone);
+          border-color: var(--bone);
+        }
+
+        .filter-btn.active {
+          background: var(--accent);
+          color: #ffffff;
+          border-color: var(--accent);
+          box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .filter-count {
+          font-size: 0.7rem;
+          opacity: 0.75;
+          padding: 0.1rem 0.4rem;
+          border-radius: 9999px;
+          background: rgba(0, 0, 0, 0.2);
+        }
+
+        .exp-list {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .exp-item {
+          display: grid;
+          grid-template-columns: clamp(140px, 22vw, 240px) 1fr;
+          gap: 2.5rem;
+          padding: clamp(2.2rem, 4.5vh, 3.5rem) 0;
+          border-bottom: 1px solid var(--hairline);
+          align-items: baseline;
+          transition: transform 0.35s var(--ease-out);
+        }
+
+        .exp-item:first-child {
+          border-top: 1px solid var(--hairline);
+        }
+
+        .exp-item:hover {
+          transform: translateX(1.2rem);
+        }
+
+        .exp-year-col {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+        }
+
+        .exp-year {
+          font-family: 'Bricolage Grotesque', var(--font-display);
+          font-weight: 800;
+          font-size: clamp(3rem, 6.5vw, 6rem);
+          line-height: 0.85;
+          letter-spacing: -0.04em;
+          color: var(--ink);
+          -webkit-text-stroke: 1.8px var(--muted-gray);
+          paint-order: stroke fill;
+          transition: color 0.35s var(--ease-out), -webkit-text-stroke-color 0.35s;
+        }
+
+        .exp-item:hover .exp-year {
+          color: var(--accent);
+          -webkit-text-stroke-color: var(--accent);
+        }
+
+        .exp-badge {
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+          color: var(--accent);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          background: rgba(91, 108, 255, 0.08);
+          border: 1px solid rgba(91, 108, 255, 0.2);
+          padding: 0.25rem 0.65rem;
+          border-radius: 4px;
+          display: inline-block;
+          width: fit-content;
+        }
+
+        .exp-period {
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+          color: var(--muted-gray);
+          letter-spacing: 0.02em;
+        }
+
+        .exp-details {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+        }
+
+        .exp-title-row {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .exp-role-title {
+          font-family: var(--font-display);
+          font-weight: 700;
+          font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+          letter-spacing: -0.02em;
+          color: var(--bone);
+        }
+
+        .exp-link-icon {
+          color: var(--accent);
+          font-size: 1.1rem;
+          font-weight: 700;
+          transition: transform 0.2s;
+        }
+
+        .exp-link-icon:hover {
+          transform: translate(2px, -2px);
+        }
+
+        .exp-org-row {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          flex-wrap: wrap;
+        }
+
+        .exp-credential-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid var(--hairline-strong);
+          padding: 0.18rem 0.55rem;
+          border-radius: 4px;
+        }
+
+        .credential-label {
+          color: var(--muted-gray);
+          font-weight: 500;
+        }
+
+        .credential-code {
+          color: var(--bone);
+          font-weight: 600;
+          letter-spacing: 0.04em;
+        }
+
+        .exp-role-org {
+          font-family: var(--font-mono);
+          font-size: 0.84rem;
+          color: var(--accent);
+          letter-spacing: 0.05em;
+        }
+
+        .exp-desc {
+          font-size: 1.05rem;
+          color: var(--muted-gray);
+          max-width: 65ch;
+          line-height: 1.6;
+          margin-top: 0.4rem;
+        }
+
+        .exp-action-row {
+          margin-top: 0.75rem;
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+        }
+
+        .exp-verify-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-family: var(--font-mono);
+          font-size: 0.76rem;
+          font-weight: 600;
+          color: var(--accent);
+          background: rgba(91, 108, 255, 0.08);
+          border: 1px solid rgba(91, 108, 255, 0.25);
+          padding: 0.35rem 0.85rem;
+          border-radius: 9999px;
+          text-decoration: none;
+          transition: all 0.25s var(--ease-out);
+        }
+
+        .exp-verify-pill:hover {
+          background: var(--accent);
+          color: #ffffff;
+          border-color: var(--accent);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 14px var(--accent-glow);
+        }
+
+        .exp-highlights {
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+          margin-top: 0.75rem;
+          padding-left: 0.2rem;
+        }
+
+        .exp-highlight-item {
+          font-size: 0.95rem;
+          color: #c4c0b8;
+          display: flex;
+          align-items: baseline;
+          gap: 0.6rem;
+          line-height: 1.5;
+        }
+
+        .bullet-point {
+          color: var(--accent);
+          font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+          .filter-pill-row {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.85rem;
+            scrollbar-width: none;
+          }
+          .filter-pill-row::-webkit-scrollbar {
+            display: none;
+          }
+          .exp-item {
+            grid-template-columns: 1fr;
+            gap: 0.85rem;
+            padding: 1.8rem 0;
+          }
+          .exp-item:hover {
+            transform: none;
+          }
+          .exp-year {
+            font-size: clamp(2.2rem, 6.5vw, 6rem);
+          }
+          .exp-role-title {
+            font-size: 1.3rem;
+          }
+          .exp-desc {
+            font-size: 0.96rem;
+          }
+          .exp-highlight-item {
+            font-size: 0.88rem;
+          }
+        }
+      `}</style>
     </section>
   );
 };

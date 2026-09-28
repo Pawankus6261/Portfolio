@@ -1,390 +1,297 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import {
-  Mail,
-  MapPin,
-  Github,
-  Linkedin,
-  Send,
-  Coffee,
-  MessageCircle,
-  Calendar,
-} from "lucide-react";
-// --- NEW IMPORTS ---
-import { useState } from "react"; // Import useState for manual form handling
-// For animations - using direct URL import to avoid resolution errors
-import { motion } from "framer-motion";
-// --- REMOVED: @formspree/react import ---
-
-// Constants moved outside component (best practice)
-const contactInfo = [
-  {
-    icon: <Mail className="w-5 h-5" />,
-    label: "Email",
-    value: "contact.pawan62.com",
-    href: "mailto:contact.pawan62.com",
-  },
-  {
-    icon: <MapPin className="w-4 h-4" />,
-    label: "Location",
-    value: "Bhopal MadhyaPradesh India",
-    href: "#", // Added href: "#" to match the logic in ContactItemWrapper
-  },
-];
-
-const socialLinks = [
-  {
-    icon: <Github className="w-5 h-5" />,
-    label: "GitHub",
-    username: "@Pawankush6261",
-    href: "https://github.com/Pawankush6261",
-    color: "group-hover:text-gray-400",
-  },
-  {
-    icon: <Linkedin className="w-5 h-5" />,
-    label: "LinkedIn",
-    username: "Pawan Kushwaha",
-    href: "https://www.linkedin.com/in/pawan-kushwaha-ai",
-    color: "group-hover:text-blue-400",
-  },
-];
+import { useState } from "react";
 
 const Contact = () => {
-  // --- MANUAL FORMSPREE STATE ---
-  // Replace "YOUR_FORM_ID" with your actual Formspree form ID
-  const FORMSPREE_ID = "mgvrveyo";
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
 
-  // --- MANUAL FORMSPREE SUBMIT HANDLER ---
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      if (response.ok) {
-        setIsSuccess(true);
-        form.reset(); // Clear the form on success
-      } else {
-        const data = await response.json();
-        setError(data.errors?.map((e: any) => e.message).join(", ") || "Something went wrong.");
-      }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-
-  // Component to render link or div
-  const ContactItemWrapper = ({
-    href,
-    children,
-  }: {
-    href: string;
-    children: React.ReactNode;
-  }) => {
-    if (href === "#") {
-      return (
-        <div className="flex items-center gap-3 p-3 rounded-lg group">
-          {children}
-        </div>
-      );
-    }
-    return (
-      <a
-        href={href}
-        className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/30 transition-colors group"
-      >
-        {children}
-      </a>
-    );
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("contact.pawan62@gmail.com").then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2600);
+    });
   };
 
   return (
-    <section id="contact" className="py-20 bg-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* --- ANIMATED HERO SECTION --- */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <Badge
-            variant="secondary"
-            className="px-4 py-3 mb-6 bg-secondary/50 backdrop-blur-sm"
+    <section className="contact-section" id="contact">
+      {/* Concentric slowly rotating orbit rings */}
+      <svg className="orbit-background" viewBox="0 0 900 900" fill="none">
+        <circle cx="450" cy="450" r="420" stroke="#08080a" strokeWidth="1.5" strokeDasharray="8 12" />
+        <circle cx="450" cy="450" r="320" stroke="#08080a" strokeWidth="2" strokeDasharray="14 18" />
+        <circle cx="450" cy="450" r="220" stroke="#08080a" strokeWidth="1" strokeDasharray="6 8" />
+        <circle cx="450" cy="450" r="120" stroke="#08080a" strokeWidth="2" />
+        <circle cx="450" cy="130" r="9" fill="#08080a" />
+        <circle cx="670" cy="450" r="12" fill="#08080a" />
+        <circle cx="340" cy="620" r="7" fill="#08080a" />
+      </svg>
+
+      <div className="container contact-container">
+        <div className="contact-eyebrow">05 / Initiate Conversation</div>
+        <h2 className="contact-hero-statement">
+          Let’s build something worth remembering.
+        </h2>
+
+        <div className="contact-actions-grid">
+          <a
+            href="mailto:contact.pawan62@gmail.com"
+            className="contact-pill-btn contact-btn-dark"
           >
-            Contact
-          </Badge>
-          <h2 className="text-4xl lg:text-6xl font-bold mb-6">
-            Let's{" "}
-            <span className="bg-gradient-primary bg-clip-text text-transparent">
-              Connect
-            </span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Have a project in mind or just want to chat about technology? I'd
-            love to hear from you. Let's create something amazing together.
-          </p>
-        </motion.div>
+            <span>Send Email</span>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
 
-        <div className="grid lg:grid-cols-3 gap-12">
-          {/* --- ANIMATED CONTACT FORM --- */}
-          <motion.div
-            className="lg:col-span-2"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
+          <button
+            onClick={handleCopyEmail}
+            className="contact-pill-btn contact-btn-outline"
           >
-            <Card className="bg-card/50 backdrop-blur-sm border-border">
-              <CardHeader>
-                <h3 className="text-2xl font-bold">Send me a message</h3>
-                <p className="text-muted-foreground">
-                  Fill out the form below and I'll get back to you as soon as
-                  possible.
-                </p>
-              </CardHeader>
-              <CardContent>
-                {/* --- FORMSPREE SUCCESS MESSAGE --- */}
-                {isSuccess ? (
-                  <div className="text-center p-8">
-                    <h3 className="text-2xl font-bold mb-4">Message Sent!</h3>
-                    <p className="text-muted-foreground">
-                      Thanks for reaching out. I'll get back to you as soon as
-                      possible.
-                    </p>
-                  </div>
-                ) : (
-                  /* --- FORMSPREE FORM --- */
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        name="firstName" // Added name attribute
-                        placeholder="John"
-                        className="bg-background/50 border-border"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        name="lastName" // Added name attribute
-                        placeholder="Doe"
-                        className="bg-background/50 border-border"
-                      />
-                    </div>
+            <span>{copied ? "Email Copied!" : "Copy Email"}</span>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+          </button>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        name="email" // Added name attribute (required for Formspree reply-to)
-                        placeholder="john@example.com"
-                        className="bg-background/50 border-border"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="subject">Subject</Label>
-                      <Input
-                        id="subject"
-                        name="subject" // Added name attribute
-                        placeholder="Project Inquiry"
-                        className="bg-background/50 border-border"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Message</Label>
-                      <Textarea
-                        id="message"
-                        name="message" // Added name attribute
-                        placeholder="Tell me about your project..."
-                        rows={6}
-                        className="bg-background/50 border-border resize-none"
-                        required
-                      />
-                    </div>
-
-                    {/* --- ERROR MESSAGE --- */}
-                    {error && (
-                      <div className="text-red-500 text-sm">
-                        Error: {error}
-                      </div>
-                    )}
-
-
-                    <Button
-                      type="submit"
-                      variant="hero"
-                      className="w-full group"
-                      disabled={isSubmitting} // Disable button while submitting
-                    >
-                      {/* Show different text based on submitting state */}
-                      {isSubmitting ? "Sending..." : "Send Message"}
-                      <Send className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </form>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* --- ANIMATED CONTACT INFO & QUICK ACTIONS --- */}
-          <motion.div
-            className="space-y-6"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
+          <a
+            href="https://github.com/Pawankus6261"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-pill-btn contact-btn-outline"
           >
-            {/* Contact Information */}
-            <Card className="bg-card/50 backdrop-blur-sm border-border">
-              <CardHeader>
-                <h4 className="text-xl font-semibold">Contact Information</h4>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {contactInfo.map((info) => (
-                  <ContactItemWrapper key={info.label} href={info.href}>
-                    <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center text-primary-foreground">
-                      {info.icon}
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground">
-                        {info.label}
-                      </div>
-                      <div className="font-medium group-hover:text-primary transition-colors">
-                        {info.value}
-                      </div>
-                    </div>
-                  </ContactItemWrapper>
-                ))}
-              </CardContent>
-            </Card>
+            <span>GitHub</span>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
 
-            {/* Social Links */}
-            <Card className="bg-card/50 backdrop-blur-sm border-border">
-              <CardHeader>
-                <h4 className="text-xl font-semibold">Follow Me</h4>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/30 transition-colors group"
-                  >
-                    <div
-                      className={`text-muted-foreground transition-colors ${social.color}`}
-                    >
-                      {social.icon}
-                    </div>
-                    <div>
-                      <div className="font-medium">{social.label}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {social.username}
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </CardContent>
-            </Card>
+          <a
+            href="https://www.linkedin.com/in/pawan-kushwaha-ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-pill-btn contact-btn-outline"
+          >
+            <span>LinkedIn</span>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
 
-            {/* Quick Actions */}
-            <Card className="bg-card/50 backdrop-blur-sm border-border">
-              <CardHeader>
-                <h4 className="text-xl font-semibold">Quick Actions</h4>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <a
-                    href="https://calendly.com/contact-pawan62"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Coffee className="w-4 h-4 mr-2" />
-                    Schedule a Coffee Chat
-                  </a>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <a
-                    href="https://wa.me/918602236251"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    WhatsApp Message
-                  </a>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <a
-                    href="https://calendly.com/contact-pawan62"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Book a Meeting
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Response Time */}
-            <Card className="bg-gradient-secondary border-border">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-6 h-6 text-primary-foreground" />
-                </div>
-                <h4 className="font-semibold mb-2">Quick Response</h4>
-                <p className="text-sm text-muted-foreground">
-                  I typically respond to emails within 24 hours. For urgent
-                  matters, feel free to call or WhatsApp.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <a
+            href="CV_Pawan.pdf"
+            download="Pawan_Kushwaha_CV.pdf"
+            className="contact-pill-btn contact-btn-outline"
+          >
+            <span>Download CV</span>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          </a>
         </div>
       </div>
+
+      {/* Copy Toast */}
+      <div className={`copy-toast ${copied ? "show" : ""}`}>
+        Email copied to clipboard!
+      </div>
+
+      <style>{`
+        .contact-section {
+          background: var(--accent);
+          color: var(--ink);
+          padding: clamp(3.5rem, 10vh, 10rem) 0;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .orbit-background {
+          position: absolute;
+          top: 50%;
+          right: -15%;
+          transform: translateY(-50%);
+          width: 900px;
+          height: 900px;
+          pointer-events: none;
+          opacity: 0.18;
+          animation: slowSpin 120s linear infinite;
+        }
+
+        @keyframes slowSpin {
+          from { transform: translateY(-50%) rotate(0deg); }
+          to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        .contact-container {
+          position: relative;
+          z-index: 2;
+        }
+
+        .contact-eyebrow {
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: rgba(8, 8, 10, 0.7);
+          margin-bottom: 1.5rem;
+        }
+
+        .contact-hero-statement {
+          font-family: var(--font-display);
+          font-weight: 800;
+          font-size: clamp(2.2rem, 7.5vw, 8.5rem);
+          line-height: 0.92;
+          letter-spacing: -0.04em;
+          text-transform: uppercase;
+          color: var(--ink);
+          max-width: 16ch;
+          margin-bottom: clamp(2.5rem, 5vh, 4.5rem);
+          word-break: break-word;
+        }
+
+        .contact-actions-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          align-items: center;
+        }
+
+        .contact-pill-btn {
+          font-family: var(--font-body);
+          font-weight: 600;
+          font-size: 1.05rem;
+          padding: 1rem 2.2rem;
+          border-radius: 9999px;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          transition: all 0.3s var(--ease-out);
+        }
+
+        .contact-btn-dark {
+          background: var(--ink);
+          color: var(--bone);
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+        }
+
+        .contact-btn-dark:hover {
+          background: #000000;
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+        }
+
+        .contact-btn-outline {
+          background: transparent;
+          color: var(--ink);
+          border: 1.5px solid rgba(8, 8, 10, 0.4);
+        }
+
+        .contact-btn-outline:hover {
+          background: rgba(8, 8, 10, 0.08);
+          border-color: var(--ink);
+          transform: translateY(-3px);
+        }
+
+        .copy-toast {
+          position: fixed;
+          bottom: 2rem;
+          right: 2rem;
+          background: var(--deep-gray);
+          color: var(--bone);
+          border: 1px solid var(--accent);
+          padding: 0.85rem 1.5rem;
+          border-radius: 9999px;
+          font-family: var(--font-mono);
+          font-size: 0.8rem;
+          box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+          transform: translateY(150%);
+          opacity: 0;
+          transition: transform 0.35s var(--ease-spring), opacity 0.35s;
+          z-index: 10005;
+          pointer-events: none;
+        }
+
+        .copy-toast.show {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+
+        @media (max-width: 640px) {
+          .contact-hero-statement {
+            font-size: clamp(2rem, 8.5vw, 3.2rem);
+            line-height: 1;
+            margin-bottom: 2rem;
+          }
+          .contact-actions-grid {
+            flex-direction: column;
+            width: 100%;
+            align-items: stretch;
+            gap: 0.75rem;
+          }
+          .contact-pill-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.85rem 1.4rem;
+            font-size: 0.95rem;
+          }
+          .copy-toast {
+            right: 50%;
+            bottom: 1.5rem;
+            transform: translateX(50%) translateY(150%);
+            white-space: nowrap;
+          }
+          .copy-toast.show {
+            transform: translateX(50%) translateY(0%);
+          }
+        }
+      `}</style>
     </section>
   );
 };

@@ -1,33 +1,54 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Experience from "@/components/Experience";
-import Work from "@/components/Work";
-import Contact from "@/components/Contact";
+import { useState } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
 import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import Marquee from "@/components/Marquee";
+import About from "@/components/About";
+import TechStack from "@/components/TechStack";
+import Work from "@/components/Work";
+import Experience from "@/components/Experience";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import CustomCursor from "@/components/CustomCursor";
 
-const queryClient = new QueryClient();
+const SESSION_STORAGE_KEY = "pawan_portfolio_visited";
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <Navbar />
+const shouldShowLoader = () => {
+  try {
+    return sessionStorage.getItem(SESSION_STORAGE_KEY) !== "true";
+  } catch (e) {
+    return true;
+  }
+};
+
+const App = () => {
+  const [isLoading, setIsLoading] = useState(shouldShowLoader);
+  const [isSiteReady, setIsSiteReady] = useState(() => !shouldShowLoader());
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    setIsSiteReady(true);
+  };
+
+  return (
+    <>
+      {isLoading && (
+        <LoadingScreen onComplete={handleLoadingComplete} />
+      )}
+      <CustomCursor />
+      <Navbar isReady={isSiteReady} />
       <main>
-        <Hero />
-        <About /> 
+        <Hero isReady={isSiteReady} />
+        <Marquee />
+        <About />
+        <TechStack />
         <Work />
         <Experience />
         <Contact />
       </main>
       <Footer />
-    </BrowserRouter>
-  </QueryClientProvider>
-);
-
+    </>
+  );
+};
 
 export default App;
