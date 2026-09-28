@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 extracted_cv.txt
 *.log
+*.timestamp*.mjs
