@@ -166,8 +166,24 @@ img, svg {
   border-radius: 50%;
   z-index: 100005;
   transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease, transform 0.12s ease-out;
-  will-change: transform, left, top;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.12s ease-out;
+  will-change: transform, left, top, opacity;
+}
+
+body.custom-cursor-visible .custom-cursor-dot,
+body.custom-cursor-visible .custom-cursor-ring {
+  opacity: 1;
+  visibility: visible;
+}
+
+body:not(.custom-cursor-visible) .custom-cursor-dot,
+body:not(.custom-cursor-visible) .custom-cursor-ring,
+body:not(.custom-cursor-visible) .cursor-spotlight {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .custom-cursor-dot {

@@ -76,7 +76,9 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
       const activeRect = activeEl.getBoundingClientRect();
       const wrapRect = navLinksWrapRef.current.getBoundingClientRect();
       activePillRef.current.style.width = `${activeRect.width}px`;
+      activePillRef.current.style.height = `${activeRect.height}px`;
       activePillRef.current.style.left = `${activeRect.left - wrapRect.left}px`;
+      activePillRef.current.style.top = `${activeRect.top - wrapRect.top}px`;
       activePillRef.current.style.opacity = "1";
     }
   }, [activeSection]);
@@ -113,8 +115,8 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
         aria-hidden="true"
       />
 
-      <header className={!isReady ? "header-pending" : "header-entered"}>
-        {/* DESKTOP NAVBAR */}
+      <header className={!isReady ? "header-pending" : "header-entered"} data-clean-top="true">
+        {/* DESKTOP NAVBAR - TOP HORIZONTAL FLOATING DOCK */}
         <nav
           className={`navbar desktop-navbar ${scrolled ? "scrolled" : ""}`}
           id="navbar"
@@ -125,11 +127,12 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
             onClick={() => scrollTo("home")}
             className="nav-logo-chip"
             aria-label="Pawan Kushwaha Home"
+            title="Pawan Kushwaha"
           >
             PK
           </button>
 
-          {/* Nav links with sliding blue indicator */}
+          {/* Nav links with sliding active indicator */}
           <div className="nav-links-wrapper" ref={navLinksWrapRef}>
             <div
               className="nav-active-pill"
@@ -156,7 +159,8 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
             href="mailto:contact.pawan62@gmail.com"
             className="nav-contact-btn"
           >
-            Say Hello
+            <span>Say Hello</span>
+            <span className="nav-btn-arrow">↗</span>
           </a>
         </nav>
 
@@ -247,6 +251,30 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
                   LinkedIn
                 </a>
                 <a
+                  href="https://leetcode.com/u/Pawankushwaha6261/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-link"
+                >
+                  LeetCode
+                </a>
+                <a
+                  href="https://www.hackerrank.com/profile/Pawankush6261"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-link"
+                >
+                  HackerRank
+                </a>
+                <a
+                  href="https://www.credly.com/users/pawan-kushwaha.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-link"
+                >
+                  Credly
+                </a>
+                <a
                   href="CV_Pawan.pdf"
                   download="Pawan_Kushwaha_CV.pdf"
                   className="mobile-social-link"
@@ -281,55 +309,73 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
           transform: translateY(0);
           pointer-events: auto;
           transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+          z-index: 100000;
+          position: relative;
         }
 
-        /* Desktop styles */
-        .navbar {
+        /* Desktop styles - Top Horizontal Floating Navigation Dock */
+        .navbar.desktop-navbar {
           position: fixed;
           top: 1.5rem;
           left: 50%;
           transform: translateX(-50%);
-          z-index: 1000;
+          z-index: 100000;
           display: flex;
+          flex-direction: row;
           align-items: center;
           gap: 0.35rem;
-          background: rgba(8, 8, 10, 0.78);
-          backdrop-filter: blur(20px) saturate(160%);
-          -webkit-backdrop-filter: blur(20px) saturate(160%);
-          border: 1px solid var(--hairline-strong);
-          padding: 0.4rem 0.5rem;
+          background: rgba(10, 10, 14, 0.76);
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          padding: 0.4rem 0.55rem;
           border-radius: 9999px;
-          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
-          transition: padding 0.3s var(--ease-out), top 0.3s var(--ease-out), background 0.3s var(--ease-out);
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+          transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                      padding 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                      background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                      box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .navbar.scrolled {
+        .navbar.desktop-navbar.scrolled {
           top: 1rem;
-          padding: 0.32rem 0.4rem;
-          background: rgba(8, 8, 10, 0.9);
+          padding: 0.32rem 0.45rem;
+          background: rgba(8, 8, 12, 0.92);
+          border-color: rgba(91, 108, 255, 0.22);
+          box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 24px rgba(91, 108, 255, 0.14);
         }
 
         .nav-logo-chip {
           font-family: var(--font-mono);
-          font-size: 0.72rem;
-          font-weight: 500;
+          font-size: 0.75rem;
+          font-weight: 700;
           color: var(--bone);
-          padding: 0.4rem 0.85rem;
+          padding: 0.42rem 0.85rem;
           border-radius: 9999px;
-          background: var(--deep-gray);
-          border: 1px solid var(--hairline);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          letter-spacing: 0.08em;
+          transition: all 0.25s ease;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           margin-right: 0.2rem;
-          letter-spacing: 0.06em;
-          transition: border-color 0.2s;
         }
 
         .nav-logo-chip:hover {
           border-color: var(--accent);
+          background: var(--accent);
+          color: #ffffff;
+          transform: scale(1.05);
+          box-shadow: 0 0 16px rgba(91, 108, 255, 0.5);
         }
 
         .nav-links-wrapper {
           position: relative;
           display: flex;
+          flex-direction: row;
           align-items: center;
           gap: 0.15rem;
         }
@@ -342,8 +388,9 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
           color: var(--muted-gray);
           padding: 0.42rem 0.95rem;
           border-radius: 9999px;
-          transition: color 0.25s ease;
+          transition: color 0.25s ease, transform 0.2s ease;
           white-space: nowrap;
+          text-decoration: none;
         }
 
         .nav-link:hover {
@@ -351,37 +398,52 @@ const Navbar = ({ isReady = true }: NavbarProps) => {
         }
 
         .nav-link.active {
-          color: var(--bone);
+          color: #ffffff;
+          font-weight: 600;
         }
 
         .nav-active-pill {
           position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
           background: var(--accent);
           border-radius: 9999px;
           z-index: 1;
           pointer-events: none;
-          transition: all 0.35s var(--ease-out);
+          transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
           opacity: 0;
+          box-shadow: 0 0 18px rgba(91, 108, 255, 0.5);
         }
 
         .nav-contact-btn {
-          font-size: 0.8rem;
+          font-family: var(--font-mono);
+          font-size: 0.74rem;
           font-weight: 600;
+          letter-spacing: 0.04em;
           background: var(--bone);
           color: var(--ink);
-          padding: 0.42rem 1.1rem;
+          padding: 0.44rem 1.05rem;
           border-radius: 9999px;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
           margin-left: 0.35rem;
-          transition: background 0.25s, transform 0.2s;
+          transition: all 0.25s ease;
           white-space: nowrap;
+          text-decoration: none;
+        }
+
+        .nav-btn-arrow {
+          font-size: 0.8rem;
+          transition: transform 0.25s ease;
         }
 
         .nav-contact-btn:hover {
           background: #ffffff;
-          transform: scale(1.03);
+          transform: scale(1.04);
+          box-shadow: 0 0 18px rgba(239, 236, 230, 0.45);
+        }
+
+        .nav-contact-btn:hover .nav-btn-arrow {
+          transform: translate(2px, -2px);
         }
 
         /* Mobile Topbar — Hidden on Desktop */

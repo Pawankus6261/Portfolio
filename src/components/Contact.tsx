@@ -130,6 +130,78 @@ const Contact = () => {
 
           <StaggerItem scale>
             <a
+              href="https://leetcode.com/u/Pawankushwaha6261/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-pill-btn contact-btn-outline"
+            >
+              <span>LeetCode</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </StaggerItem>
+
+          <StaggerItem scale>
+            <a
+              href="https://www.hackerrank.com/profile/Pawankush6261"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-pill-btn contact-btn-outline"
+            >
+              <span>HackerRank</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </StaggerItem>
+
+          <StaggerItem scale>
+            <a
+              href="https://www.credly.com/users/pawan-kushwaha.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-pill-btn contact-btn-outline"
+            >
+              <span>Credly</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </StaggerItem>
+
+          <StaggerItem scale>
+            <a
               href="CV_Pawan.pdf"
               download="Pawan_Kushwaha_CV.pdf"
               className="contact-pill-btn contact-btn-outline"

@@ -137,6 +137,51 @@ const TRAJECTORY_DATA: TrajectoryItem[] = [
   // 3. CERTIFICATIONS & VERIFIED ACCREDITATIONS
   // =============================================
   {
+    id: "cert-credly-profile",
+    category: "certificates",
+    year: "2026",
+    period: "Verified Digital Badges · Credly",
+    title: "Credly Official Accreditation Transcript",
+    org: "Credly · Verified Digital Credentials",
+    badge: "Credly Verified",
+    desc: "Comprehensive public transcript of industry-recognized credentials, cloud foundations, and technology certificates authenticated by issuing authorities.",
+    highlights: [
+      "Central repository of verified badges from AWS Academy and accredited tech partners.",
+      "Cryptographically verified credential metadata and achievement criteria.",
+    ],
+    link: "https://www.credly.com/users/pawan-kushwaha.ai",
+  },
+  {
+    id: "cert-leetcode-profile",
+    category: "certificates",
+    year: "2026",
+    period: "DSA & Problem Solving · LeetCode",
+    title: "LeetCode Algorithmic Problem Solving",
+    org: "LeetCode",
+    badge: "LeetCode Profile",
+    desc: "Consistent practice tackling Data Structures & Algorithms, dynamic programming, tree traversals, and algorithmic problem solving.",
+    highlights: [
+      "Deep focus on time and space complexity optimization in Python and C++.",
+      "Systematic mastery of arrays, graphs, hashing, and recursive paradigms.",
+    ],
+    link: "https://leetcode.com/u/Pawankushwaha6261/",
+  },
+  {
+    id: "cert-hackerrank-profile",
+    category: "certificates",
+    year: "2025",
+    period: "Skills & Badges · HackerRank",
+    title: "HackerRank Verified Developer Profile",
+    org: "HackerRank",
+    badge: "HackerRank Verified",
+    desc: "Verified developer profile with skill accreditations, SQL certifications, and algorithmic problem-solving milestones.",
+    highlights: [
+      "SQL (Basic) verified certificate holder.",
+      "Algorithmic challenges and competitive problem solving.",
+    ],
+    link: "https://www.hackerrank.com/profile/Pawankush6261",
+  },
+  {
     id: "cert-genai",
     category: "certificates",
     year: "2025",

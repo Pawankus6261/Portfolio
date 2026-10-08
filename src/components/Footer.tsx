@@ -35,6 +35,27 @@ const Footer = () => {
           >
             LinkedIn
           </a>
+          <a
+            href="https://leetcode.com/u/Pawankushwaha6261/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LeetCode
+          </a>
+          <a
+            href="https://www.hackerrank.com/profile/Pawankush6261"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            HackerRank
+          </a>
+          <a
+            href="https://www.credly.com/users/pawan-kushwaha.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Credly
+          </a>
           <a href="mailto:contact.pawan62@gmail.com">Email</a>
           <button onClick={scrollToTop} className="footer-top-btn">
             Back to Top ↑
